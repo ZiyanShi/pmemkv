@@ -2,6 +2,8 @@
 /* Copyright 2017-2021, Intel Corporation */
 
 #include "engine.h"
+#include "module_loader.hpp"
+#include <iterator>
 
 namespace pmem
 {
@@ -30,6 +32,12 @@ storage_engine_factory::create_engine(const std::string &name,
 	if (it != pairs.end()) {
 		return it->second->create(std::move(cfg));
 	}
+	// XXX probably here load modules
+	auto loader = module_loader<engine_base::factory_base>("lib" + name + ".so");
+	auto module_factory = std::move(loader.get_instance());
+	register_factory(std::move(module_factory));
+	return create_engine(name, std::move(cfg));
+
 	throw internal::wrong_engine_name("Unknown engine name \"" + name +
 					  "\". Available engines: " + get_names());
 }

@@ -131,10 +131,8 @@ if(ENGINE_STREE)
 	)
 endif()
 if(ENGINE_TREE3)
-	list(APPEND SOURCE_FILES
-		src/engines-experimental/tree3.h
-		src/engines-experimental/tree3.cc
-	)
+	add_library(tree3 SHARED src/engines-experimental/tree3.cc)
+	#	target_link_libraries(tree3 SHARED ${CMAKE_DL_LIBS})
 endif()
 if(ENGINE_RADIX)
 	list(APPEND SOURCE_FILES
@@ -304,6 +302,7 @@ target_include_directories(pmemkv PRIVATE src/valgrind)
 target_compile_options(pmemkv PRIVATE -DLIBPMEMOBJ_CPP_VG_ENABLED=1)
 
 target_link_libraries(pmemkv PRIVATE ${LIBPMEMOBJ++_LIBRARIES})
+target_link_libraries(pmemkv PRIVATE ${CMAKE_DL_LIBS})
 if(ENGINE_VSMAP OR ENGINE_VCMAP)
 	target_link_libraries(pmemkv PRIVATE ${MEMKIND_LIBRARIES})
 endif()

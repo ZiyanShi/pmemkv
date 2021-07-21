@@ -588,8 +588,15 @@ void internal::tree3::KVInnerNode::assert_invariants()
 		assert(children[i] == nullptr);
 }
 
+extern "C" {
 static factory_registerer
 	register_tree3(std::unique_ptr<engine_base::factory_base>(new tree3_factory));
+
+tree3_factory *module_ctor()
+{
+	return new tree3_factory();
+}
+}
 
 } // namespace kv
 } // namespace pmem
