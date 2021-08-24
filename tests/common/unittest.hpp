@@ -25,6 +25,7 @@
 #include <thread>
 #include <type_traits>
 #include <vector>
+#include <filesystem>
 
 static inline void UT_EXCEPTION(std::exception &e)
 {
@@ -211,11 +212,19 @@ static inline int run_engine_tests(std::string engine, std::string json,
 	test_register_sighandlers();
 
 	try {
-		auto kv = INITIALIZE_KV(engine, CONFIG_FROM_JSON(json));
-
 		for (auto &test : tests) {
+			auto cfg = CONFIG_FROM_JSON(json);
+
+			std::string path;
+			cfg.get_string("path", path);
+
+			auto kv = INITIALIZE_KV(engine, std::move(cfg));
+
 			test(kv);
-			CLEAR_KV(kv);
+
+			kv.close();
+
+			std::filesystem::remove_all(path);
 		}
 	} catch (std::exception &e) {
 		UT_FATALexc(e);
