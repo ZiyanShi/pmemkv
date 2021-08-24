@@ -236,6 +236,144 @@ add_engine_test(ENGINE blackhole
 		BINARY transaction_not_supported
 		TRACERS none memcheck
 		SCRIPT blackhole/default.cmake)
+
+
+###################################### KVDK ##############################
+
+add_engine_test(ENGINE kvdk
+		BINARY put_get_remove
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake)
+
+add_engine_test(ENGINE kvdk
+		BINARY put_get_remove_not_aligned
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake)
+
+add_engine_test(ENGINE kvdk
+		BINARY put_get_remove_charset_params
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake
+		PARAMS 16 8)
+
+add_engine_test(ENGINE kvdk
+		BINARY put_get_remove_long_key
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake)
+
+add_engine_test(ENGINE kvdk
+		BINARY put_get_remove_params
+		TRACERS none
+		SCRIPT kvdk/default.cmake
+		DB_SIZE 4G PARAMS 400000)
+
+add_engine_test(ENGINE kvdk
+		BINARY put_get_remove_params
+		TRACERS memcheck pmemcheck
+		SCRIPT kvdk/default.cmake
+		DB_SIZE 1G PARAMS 4000)
+
+add_engine_test(ENGINE kvdk
+		BINARY put_get_std_map
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake
+		PARAMS 1000 100 200)
+
+add_engine_test(ENGINE kvdk
+		BINARY iterate
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake)
+
+
+add_engine_test(ENGINE kvdk
+		BINARY concurrent_put_get_remove_params
+		TRACERS none memcheck
+		SCRIPT kvdk/default.cmake
+		PARAMS 8 50)
+
+add_engine_test(ENGINE kvdk
+		BINARY concurrent_put_get_remove_gen_params
+		TRACERS none memcheck
+		SCRIPT kvdk/default.cmake
+		PARAMS 8 50 100)
+
+add_engine_test(ENGINE kvdk
+
+		BINARY concurrent_put_get_remove_single_op_params
+		TRACERS none
+		SCRIPT kvdk/default.cmake
+		PARAMS 1000)
+
+add_engine_test(ENGINE kvdk
+		BINARY concurrent_put_get_remove_single_op_params
+		TRACERS memcheck
+		SCRIPT kvdk/default.cmake
+		PARAMS 400)
+
+add_engine_test(ENGINE kvdk
+		BINARY persistent_put_get_std_map_multiple_reopen
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake
+		PARAMS 1000 100 200)
+
+	#add_engine_test(ENGINE kvdk
+	#		BINARY persistent_not_found_verify
+	#		TRACERS none memcheck pmemcheck
+	#		SCRIPT pmemobj_based/persistent/insert_check.cmake)
+	#
+	#add_engine_test(ENGINE kvdk
+	#		BINARY persistent_overwrite_verify
+	#		TRACERS none memcheck pmemcheck
+	#		SCRIPT pmemobj_based/persistent/insert_check.cmake)
+	#
+	#add_engine_test(ENGINE kvdk
+	#		BINARY persistent_put_remove_verify
+	#		TRACERS none memcheck pmemcheck
+	#		SCRIPT pmemobj_based/persistent/insert_check.cmake)
+
+	#add_engine_test(ENGINE kvdk
+	#		BINARY persistent_put_verify
+	#		TRACERS none memcheck pmemcheck
+	#		SCRIPT pmemobj_based/persistent/insert_check.cmake)
+
+	#add_engine_test(ENGINE kvdk
+	#		BINARY persistent_put_verify_asc_params
+	#		TRACERS none memcheck pmemcheck
+	#		SCRIPT pmemobj_based/persistent/insert_check.cmake
+	#		DB_SIZE 1G PARAMS 4000)
+
+	#add_engine_test(ENGINE kvdk
+	#		BINARY persistent_put_verify_desc_params
+	#		TRACERS none memcheck pmemcheck
+	#		SCRIPT pmemobj_based/persistent/insert_check.cmake
+	#		DB_SIZE 1G PARAMS 4000)
+
+add_engine_test(ENGINE kvdk
+		BINARY pmemobj_error_handling_tx_oom
+		TRACERS none
+		SCRIPT kvdk/default.cmake
+		DB_SIZE 200M)
+
+	#add_engine_test(ENGINE kvdk
+	#		BINARY pmemobj_create_or_error_if_exists
+	#		TRACERS none memcheck pmemcheck
+	#		SCRIPT pmemobj_based/default_no_config.cmake)
+
+add_engine_test(ENGINE kvdk
+		BINARY iterator_basic
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake)
+
+add_engine_test(ENGINE kvdk
+		BINARY iterator_concurrent
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake
+		PARAMS 8)
+
+add_engine_test(ENGINE kvdk
+		BINARY transaction_not_supported
+		TRACERS none memcheck pmemcheck
+		SCRIPT kvdk/default.cmake)
 ################################################################################
 ##################################### CMAP ####################################
 if(ENGINE_CMAP)
@@ -258,7 +396,6 @@ if(ENGINE_CMAP)
 			BINARY put_get_remove_not_aligned
 			TRACERS none memcheck pmemcheck
 			SCRIPT pmemobj_based/default.cmake)
-
 
 	add_engine_test(ENGINE cmap
 			BINARY put_get_remove_charset_params

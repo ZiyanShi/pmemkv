@@ -40,6 +40,7 @@ option(ENGINE_TREE3 "enable experimental tree3 engine" OFF)
 option(ENGINE_RADIX "enable experimental radix engine" OFF)
 option(ENGINE_ROBINHOOD "enable experimental robinhood engine (requires CXX_STANDARD to be set to value >= 14)" OFF)
 option(ENGINE_DRAM_VCMAP "enable testing dram_vcmap engine" OFF)
+option(ENGINE_KVDK "enable testing kvdk engine" ON)
 
 # ----------------------------------------------------------------- #
 ## Set required and useful variables
@@ -157,6 +158,13 @@ if(ENGINE_DRAM_VCMAP)
 		src/engines-testing/dram_vcmap.cc
 	)
 endif()
+if(ENGINE_KVDK)
+	list(APPEND SOURCE_FILES
+		src/engines-experimental/kvdk.h
+		src/engines-experimental/kvdk.cc
+	)
+endif()
+
 
 # ----------------------------------------------------------------- #
 ## Setup defines and check status of each engine
@@ -267,6 +275,7 @@ include(CheckCXXSourceCompiles)
 include(GNUInstallDirs)
 
 include(libpmemobj++)
+
 list(APPEND PKG_CONFIG_REQUIRES "libpmemobj++ >= ${LIBPMEMOBJ_CPP_REQUIRED_VERSION}")
 list(APPEND RPM_DEPENDS "libpmemobj >= ${LIBPMEMOBJ_REQUIRED_VERSION}")
 list(APPEND DEB_DEPENDS "libpmemobj1 (>= ${LIBPMEMOBJ_REQUIRED_VERSION}) | libpmemobj (>= ${LIBPMEMOBJ_REQUIRED_VERSION})")
@@ -292,6 +301,10 @@ if(ENGINE_VCMAP OR ENGINE_DRAM_VCMAP)
 	list(APPEND DEB_DEPENDS libtbb2)
 endif()
 
+if(ENGINE_KVDK)
+	include(kvdk)
+endif()
+
 # ----------------------------------------------------------------- #
 ## Link libraries, setup targets
 # ----------------------------------------------------------------- #
@@ -311,6 +324,11 @@ endif()
 if(ENGINE_VCMAP OR ENGINE_DRAM_VCMAP)
 	target_link_libraries(pmemkv PRIVATE ${TBB_LIBRARIES})
 endif()
+
+if(ENGINE_KVDK)
+	target_link_libraries(pmemkv PRIVATE ${KVDK_LIBRARIES})
+endif()
+
 
 # ----------------------------------------------------------------- #
 ## Setup additional targets
