@@ -178,16 +178,8 @@ status kvdk::get_between(string_view key1, string_view key2,
 status kvdk::exists(string_view key)
 {
 	LOG("exists for key=" << std::string(key.data(), key.size()));
-	auto tmp_key = std::string(key.data(), key.size());
-	auto iter = engine->NewSortedIterator(collection);
-	if(iter) {
-		iter->Seek(tmp_key);
-		if(iter->Valid()){
-			std::string tmp;
-			return status_mapper(engine->SGet(collection, iter->Key(), &tmp));
-		}
-	}
-	return status::NOT_FOUND;
+	std::string value;
+	return status_mapper(engine->SGet(collection, key, &value));
 }
 
 status kvdk::get(string_view key, get_v_callback *callback, void *arg)
