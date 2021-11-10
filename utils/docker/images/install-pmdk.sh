@@ -29,10 +29,7 @@ if [ "${PACKAGE_TYPE}" = "" ]; then
 else
 	make -j$(nproc) BUILD_PACKAGE_CHECK=n ${PACKAGE_TYPE}
 	if [ "${PACKAGE_TYPE}" = "dpkg" ]; then
-		sudo dpkg -i dpkg/libpmem_*.deb dpkg/libpmem-dev_*.deb \
-			dpkg/libpmemobj_*.deb dpkg/libpmemobj-dev_*.deb \
-			dpkg/pmreorder_*.deb dpkg/libpmempool_*.deb dpkg/libpmempool-dev_*.deb \
-			dpkg/libpmemblk_*.deb dpkg/libpmemlog_*.deb dpkg/pmempool_*.deb
+		sudo dpkg -i dpkg/*.deb
 	elif [ "${PACKAGE_TYPE}" = "rpm" ]; then
 		sudo rpm -i rpm/*/pmdk-debuginfo-*.rpm \
 			rpm/*/libpmem*-*.rpm \
