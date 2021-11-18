@@ -45,7 +45,7 @@ option(ENGINE_KVDK "enable testing kvdk engine" ON)
 # ----------------------------------------------------------------- #
 ## Set required and useful variables
 # ----------------------------------------------------------------- #
-set(CXX_STANDARD 11 CACHE STRING "C++ language standard")
+set(CXX_STANDARD 17 CACHE STRING "C++ language standard")
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD ${CXX_STANDARD})
