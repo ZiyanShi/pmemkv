@@ -16,12 +16,13 @@ namespace kv
 
 namespace storage_engine = KVDK_NAMESPACE;
 
-class kvdk : public engine_base {
+class kvdk_sorted : public engine_base {
 	class kvdk_iterator;
+	class kvdk_const_iterator;
 
 public:
-	kvdk(std::unique_ptr<internal::config> cfg);
-	~kvdk();
+	kvdk_sorted(std::unique_ptr<internal::config> cfg);
+	~kvdk_sorted();
 
 	std::string name() final;
 
@@ -61,7 +62,7 @@ private:
 	storage_engine::Engine *engine;
 };
 
-class kvdk::kvdk_iterator : public internal::iterator_base {
+class kvdk_sorted::kvdk_iterator : public internal::iterator_base {
 public:
 	status seek(string_view key) final;
 
@@ -74,16 +75,34 @@ private:
 	std::string name();
 };
 
-class kvdk_factory : public engine_base::factory_base {
+class kvdk_sorted::kvdk_const_iterator : public internal::iterator_base {
+public:
+	status seek(string_view key) final;
+
+	result<string_view> key() final;
+
+	result<pmem::obj::slice<const char *>> read_range(size_t pos, size_t n) final;
+
+	explicit kvdk_const_iterator(std::shared_ptr<kvdk::Iterator> iter) : iterator{iter}{}
+
+private:
+	status status_mapper(storage_engine::Status s);
+	std::string name();
+
+	std::shared_ptr<kvdk::Iterator> iterator;
+	std::string key_local;
+};
+
+class kvdk_sorted_factory : public engine_base::factory_base {
 public:
 	std::unique_ptr<engine_base>
 	create(std::unique_ptr<internal::config> cfg) override
 	{
-		return std::unique_ptr<engine_base>(new kvdk(std::move(cfg)));
+		return std::unique_ptr<engine_base>(new kvdk_sorted(std::move(cfg)));
 	};
 	std::string get_name() override
 	{
-		return "kvdk";
+		return "kvdk_sorted";
 	};
 };
 
