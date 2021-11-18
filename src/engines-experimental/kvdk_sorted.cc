@@ -367,6 +367,14 @@ status kvdk_sorted::kvdk_const_iterator::seek(string_view key)
 	std::string key_copy(key.data(), key.size());
 	LOG("seek to key=" << key_copy);
 	iterator->Seek(key_copy);
+	if (iterator->Valid())
+	{
+		if (iterator->Key() == key_copy)
+			return status::OK;
+		else 
+			return status::NOT_SUPPORTED;
+	}
+	return status::UNKNOWN_ERROR;	
 }
 
 result<string_view> kvdk_sorted::kvdk_const_iterator::key()
