@@ -40,7 +40,7 @@ option(ENGINE_TREE3 "enable experimental tree3 engine" OFF)
 option(ENGINE_RADIX "enable experimental radix engine" OFF)
 option(ENGINE_ROBINHOOD "enable experimental robinhood engine (requires CXX_STANDARD to be set to value >= 14)" OFF)
 option(ENGINE_DRAM_VCMAP "enable testing dram_vcmap engine" OFF)
-option(ENGINE_KVDK "enable testing kvdk engine" ON)
+option(ENGINE_KVDK_SORTED "enable testing kvdk_sorted engine" ON)
 
 # ----------------------------------------------------------------- #
 ## Set required and useful variables
@@ -158,7 +158,7 @@ if(ENGINE_DRAM_VCMAP)
 		src/engines-testing/dram_vcmap.cc
 	)
 endif()
-if(ENGINE_KVDK)
+if(ENGINE_KVDK_SORTED)
 	list(APPEND SOURCE_FILES
 		src/engines-experimental/kvdk_sorted.h
 		src/engines-experimental/kvdk_sorted.cc
@@ -301,7 +301,7 @@ if(ENGINE_VCMAP OR ENGINE_DRAM_VCMAP)
 	list(APPEND DEB_DEPENDS libtbb2)
 endif()
 
-if(ENGINE_KVDK)
+if(ENGINE_KVDK_SORTED)
 	include(kvdk)
 endif()
 
@@ -325,7 +325,7 @@ if(ENGINE_VCMAP OR ENGINE_DRAM_VCMAP)
 	target_link_libraries(pmemkv PRIVATE ${TBB_LIBRARIES})
 endif()
 
-if(ENGINE_KVDK)
+if(ENGINE_KVDK_SORTED)
 	target_link_libraries(pmemkv PRIVATE ${KVDK_LIBRARIES})
 endif()
 
