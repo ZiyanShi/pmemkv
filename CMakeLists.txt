@@ -160,8 +160,8 @@ if(ENGINE_DRAM_VCMAP)
 endif()
 if(ENGINE_KVDK)
 	list(APPEND SOURCE_FILES
-		src/engines-experimental/kvdk.h
-		src/engines-experimental/kvdk.cc
+		src/engines-experimental/kvdk_sorted.h
+		src/engines-experimental/kvdk_sorted.cc
 	)
 endif()
 

@@ -15,7 +15,7 @@ status kvdk::status_mapper(storage_engine::Status s)
 	switch(s)
 	{
 		case storage_engine::Status::Ok: return status::OK;
-		case  storage_engine::Status::NotFound: return status::NOT_FOUND;
+		case storage_engine::Status::NotFound: return status::NOT_FOUND;
 		default: return status::UNKNOWN_ERROR;
 //		case  MemoryOverflow,
 //		case  PmemOverflow,
