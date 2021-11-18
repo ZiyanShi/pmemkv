@@ -34,13 +34,12 @@ kvdk::kvdk(std::unique_ptr<internal::config> cfg)
 	LOG("Started ok");
 	storage_engine::Configs engine_configs;
 	engine_configs.pmem_file_size = cfg->get_size();
-	engine_configs.pmem_segment_blocks = (1ull << 8);
-	engine_configs.hash_bucket_num = (1ull << 10);
+	engine_configs.pmem_segment_blocks = (1ULL << 10);
+	engine_configs.hash_bucket_num = (1ULL << 20);
 
 	auto status = storage_engine::Engine::Open(cfg->get_path(), &engine, engine_configs, stdout);
 	(void)status;
 	assert(status == storage_engine::Status::Ok);
-
 }
 
 kvdk::~kvdk()
