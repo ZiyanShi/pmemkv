@@ -45,7 +45,7 @@ option(ENGINE_KVDK_SORTED "enable testing kvdk_sorted engine" ON)
 # ----------------------------------------------------------------- #
 ## Set required and useful variables
 # ----------------------------------------------------------------- #
-set(CXX_STANDARD 11 CACHE STRING "C++ language standard")
+set(CXX_STANDARD 17 CACHE STRING "C++ language standard")
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD ${CXX_STANDARD})
@@ -303,6 +303,7 @@ endif()
 
 if(ENGINE_KVDK_SORTED)
 	include(kvdk)
+	list(APPEND PKG_CONFIG_REQUIRES kvdk)
 endif()
 
 # ----------------------------------------------------------------- #
@@ -326,7 +327,7 @@ if(ENGINE_VCMAP OR ENGINE_DRAM_VCMAP)
 endif()
 
 if(ENGINE_KVDK_SORTED)
-	target_link_libraries(pmemkv PRIVATE ${KVDK_LIBRARIES})
+	target_link_libraries(pmemkv PRIVATE ${kvdk_LIBRARIES})
 endif()
 
 
