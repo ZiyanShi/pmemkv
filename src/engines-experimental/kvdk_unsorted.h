@@ -16,12 +16,12 @@ namespace kv
 
 namespace storage_engine = KVDK_NAMESPACE;
 
-class kvdk : public engine_base {
+class kvdk_unsorted : public engine_base {
 	class kvdk_iterator;
 
 public:
-	kvdk(std::unique_ptr<internal::config> cfg);
-	~kvdk();
+	kvdk_unsorted(std::unique_ptr<internal::config> cfg);
+	~kvdk_unsorted();
 
 	std::string name() final;
 
@@ -45,11 +45,11 @@ public:
 	std::unique_ptr<engine_base>
 	create(std::unique_ptr<internal::config> cfg) override
 	{
-		return std::unique_ptr<engine_base>(new kvdk(std::move(cfg)));
+		return std::unique_ptr<engine_base>(new kvdk_unsorted(std::move(cfg)));
 	};
 	std::string get_name() override
 	{
-		return "kvdk";
+		return "kvdk_unsorted";
 	};
 };
 

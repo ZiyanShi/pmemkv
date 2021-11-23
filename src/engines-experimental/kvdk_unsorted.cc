@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 /* Copyright 2017-2021, Intel Corporation */
 
-#include "kvdk.h"
+#include "kvdk_unsorted.h"
 
 #include <../out.h>
 
@@ -10,7 +10,7 @@ namespace pmem
 namespace kv
 {
 
-status kvdk::status_mapper(storage_engine::Status s)
+status kvdk_unsorted::status_mapper(storage_engine::Status s)
 {
 	switch(s)
 	{
@@ -29,7 +29,7 @@ status kvdk::status_mapper(storage_engine::Status s)
 	}
 }
 
-kvdk::kvdk(std::unique_ptr<internal::config> cfg)
+kvdk_unsorted::kvdk_unsorted(std::unique_ptr<internal::config> cfg)
 {
 	LOG("Started ok");
 	storage_engine::Configs engine_configs;
@@ -42,25 +42,25 @@ kvdk::kvdk(std::unique_ptr<internal::config> cfg)
 	assert(status == storage_engine::Status::Ok);
 }
 
-kvdk::~kvdk()
+kvdk_unsorted::~kvdk_unsorted()
 {
 	LOG("Stopped ok");
 	delete engine;
 }
 
-std::string kvdk::name()
+std::string kvdk_unsorted::name()
 {
-	return "kvdk";
+	return "kvdk_unsorted";
 }
 
-status kvdk::exists(string_view key)
+status kvdk_unsorted::exists(string_view key)
 {
 	LOG("exists for key=" << std::string(key.data(), key.size()));
 	std::string value;
 	return status_mapper(engine->Get(key, &value));
 }
 
-status kvdk::get(string_view key, get_v_callback *callback, void *arg)
+status kvdk_unsorted::get(string_view key, get_v_callback *callback, void *arg)
 {
 	LOG("get key=" << std::string(key.data(), key.size()));
 
@@ -72,7 +72,7 @@ status kvdk::get(string_view key, get_v_callback *callback, void *arg)
 	return status_mapper(status);
 }
 
-status kvdk::put(string_view key, string_view value)
+status kvdk_unsorted::put(string_view key, string_view value)
 {
 	LOG("put key=" << std::string(key.data(), key.size())
 		       << ", value.size=" << std::to_string(value.size()));
@@ -81,7 +81,7 @@ status kvdk::put(string_view key, string_view value)
 	return status_mapper(status);
 }
 
-status kvdk::remove(string_view key)
+status kvdk_unsorted::remove(string_view key)
 {
 	LOG("remove key=" << std::string(key.data(), key.size()));
 	auto status = exists(key);
